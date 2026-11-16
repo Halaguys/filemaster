@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FileMaster — All your file tools</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-icon">F</span> FileMaster</a>
+  <nav><a href="#pdf">PDF Tools</a><a href="#image">Image Tools</a><a href="#media">Video & Audio</a><a href="#links">Link Shortener</a></nav>
+  <a class="nav-cta" href="#tools">Explore tools</a>
+</header>
+<main>
+<section class="hero">
+  <div class="eyebrow"><span></span> SIMPLE • FAST • ALL IN ONE</div>
+  <h1>Every file task.<br><em>One powerful place.</em></h1>
+  <p>Compress, convert, resize and manage your files with easy controls. No complicated software needed.</p>
+  <div class="hero-actions"><a class="primary" href="#tools">Explore all tools <b>→</b></a><a class="secondary" href="#media">Media tools</a></div>
+  <div class="hero-note">PDF · Images · Video · Audio · Links</div>
+  <div class="floating-card"><span class="float-icon">✦</span><div><b>Smart size controls</b><small>Set your target size and quality</small></div><span class="check">✓</span></div>
+</section>
+
+<section id="tools" class="section">
+  <div class="section-head"><div><div class="eyebrow">YOUR TOOLBOX</div><h2>What would you like to do?</h2></div><p>Choose a tool to get started. Upload, adjust and download.</p></div>
+  <div class="tool-grid">
+    <a class="tool-card" href="#pdf"><span class="tool-icon violet">▤</span><h3>PDF tools</h3><p>Compress, merge and split PDF documents.</p><span class="card-arrow">↗</span></a>
+    <a class="tool-card" href="#image"><span class="tool-icon pink">▧</span><h3>Image tools</h3><p>Resize, compress and convert images.</p><span class="card-arrow">↗</span></a>
+    <a class="tool-card" href="#media"><span class="tool-icon blue">▷</span><h3>Video & audio</h3><p>Process authorized public media links.</p><span class="card-arrow">↗</span></a>
+    <a class="tool-card" href="#links"><span class="tool-icon orange">↗</span><h3>Link shortener</h3><p>Create compact links you can share.</p><span class="card-arrow">↗</span></a>
+  </div>
+</section>
+
+<section id="pdf" class="section panel-section">
+  <div class="section-head"><div><div class="eyebrow">DOCUMENT WORKSPACE</div><h2>PDF tools</h2></div><span class="pill">3 tools</span></div>
+  <div class="workspace">
+    <div class="tabs"><button class="tab active" data-tab="pdf-compress">Compress PDF</button><button class="tab" data-tab="pdf-merge">Merge PDF</button><button class="tab" data-tab="pdf-split">Split PDF</button></div>
+    <div class="tab-content" id="pdf-compress">
+      <div class="dropzone" data-drop="pdf-file"><div class="upload-symbol">↑</div><b>Drop your PDF here</b><span>or click to browse · PDF files</span><input id="pdf-file" type="file" accept="application/pdf"></div>
+      <div class="controls"><label>Compression level<select id="pdf-level"><option value="recommended">Recommended</option><option value="strong">Strong</option><option value="maximum">Maximum</option></select></label><p class="hint">This starter version rewrites the PDF structure. Deep image recompression can be added with Ghostscript.</p></div>
+      <button class="action" onclick="submitFile('/api/pdf/compress','pdf-file')">Compress PDF <span>→</span></button>
+    </div>
+    <div class="tab-content hidden" id="pdf-merge">
+      <div class="dropzone" data-drop="pdf-merge-files"><div class="upload-symbol">↑</div><b>Choose at least two PDF files</b><span>Multiple selection supported</span><input id="pdf-merge-files" type="file" accept="application/pdf" multiple></div>
+      <button class="action" onclick="submitFiles('/api/pdf/merge','pdf-merge-files')">Merge PDFs <span>→</span></button>
+    </div>
+    <div class="tab-content hidden" id="pdf-split">
+      <div class="dropzone" data-drop="pdf-split-file"><div class="upload-symbol">↑</div><b>Choose a PDF to split</b><span>PDF file</span><input id="pdf-split-file" type="file" accept="application/pdf"></div>
+      <label class="field">Pages to extract <input id="pdf-pages" placeholder="Example: 1-3, 5, 8-9"></label>
+      <button class="action" onclick="submitSplit()">Extract pages <span>→</span></button>
+    </div>
+    <div class="status" id="pdf-status" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="image" class="section">
+  <div class="section-head"><div><div class="eyebrow">IMAGE WORKSPACE</div><h2>Resize & compress images</h2></div><span class="pill">JPG · PNG · WebP</span></div>
+  <div class="workspace">
+    <div class="dropzone" data-drop="image-file"><div class="upload-symbol">↑</div><b>Drop an image here</b><span>JPG, PNG or WebP</span><input id="image-file" type="file" accept="image/*"></div>
+    <div class="control-grid">
+      <label>Width (px)<input id="img-width" type="number" min="1" placeholder="Original"></label>
+      <label>Height (px)<input id="img-height" type="number" min="1" placeholder="Original"></label>
+      <label>Target size (KB)<input id="img-kb" type="number" min="0" placeholder="Optional"></label>
+      <label>Output format<select id="img-format"><option value="jpg">JPG</option><option value="png">PNG</option><option value="webp">WebP</option></select></label>
+    </div>
+    <div class="range-row"><label for="img-quality">Image quality <b id="quality-value">80%</b></label><input id="img-quality" type="range" min="10" max="95" value="80"></div>
+    <button class="action" onclick="resizeImage()">Resize & compress image <span>→</span></button>
+    <div class="status" id="image-status" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="media" class="section panel-section">
+  <div class="section-head"><div><div class="eyebrow">MEDIA WORKSPACE</div><h2>Video & audio tools</h2></div><span class="pill">MP4 · MP3</span></div>
+  <div class="workspace">
+    <label class="field">Public media URL<input id="media-url" type="url" placeholder="https://…"></label>
+    <div class="platforms"><span>YouTube</span><span>Instagram</span><span>TikTok</span><span>Snapchat</span><span>REDnote</span></div>
+    <div class="control-grid">
+      <label>Download as<select id="media-kind"><option value="mp4">MP4 video</option><option value="mp3">MP3 audio</option></select></label>
+      <label>Video quality<select id="media-quality"><option value="best">Best available</option><option value="2160">4K (2160p max)</option><option value="1080">1080p max</option><option value="720">720p max</option></select></label>
+    </div>
+    <p class="hint">Only use public links for content you own or are authorized to download. Availability, format and resolution depend on the source. No DRM, private-account or access-control bypass.</p>
+    <button class="action" onclick="downloadMedia()">Process media <span>→</span></button>
+    <div class="status" id="media-status" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="links" class="section">
+  <div class="section-head"><div><div class="eyebrow">SHARE SMARTER</div><h2>Shorten a link</h2></div></div>
+  <div class="workspace link-workspace">
+    <label class="field">Paste your long URL<input id="long-url" type="url" placeholder="https://example.com/your-long-link"></label>
+    <button class="action" onclick="shortenLink()">Create short link <span>→</span></button>
+    <div class="status" id="link-status" aria-live="polite"></div>
+  </div>
+</section>
+</main>
+<footer><a class="brand" href="#"><span class="brand-icon">F</span> FileMaster</a><span>Useful tools. Less effort.</span><small>Use only files and media you have the right to process.</small></footer>
+<script src="/static/app.js"></script>
+</body></html>
